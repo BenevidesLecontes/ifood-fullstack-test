@@ -1,7 +1,9 @@
 package com.ifood.demo.gatewayservice.models;
 
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public class ClientOrder {
@@ -10,7 +12,6 @@ public class ClientOrder {
     private UUID restaurantId;
     private Date createdAt;
     private Date confirmedAt;
-
 
     private List<Item> items;
 
@@ -99,5 +100,26 @@ public class ClientOrder {
         public void setPrice(Double price) {
             this.price = price;
         }
+
+        public void setDescription(String description) {
+            this.description = description;
+        }
+
+        public String getDescription() {
+            return description;
+        }
+    }
+
+    public BigDecimal getTotal() {
+        BigDecimal total = BigDecimal.ZERO;
+        if (items != null) {
+            Optional<Double> reduce = items.stream().map(o -> o.getQuantity() * o.getPrice())
+                    .reduce((acc, value) -> acc + value);
+            if (reduce.isPresent()) {
+                total = BigDecimal.valueOf(reduce.get());
+            }
+        }
+
+        return total;
     }
 }

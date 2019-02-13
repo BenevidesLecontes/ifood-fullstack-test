@@ -1,9 +1,8 @@
 package com.ifood.demo.gatewayservice.models;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class OrderResponse {
+public class ClientResponse {
     private Embedded _embedded;
     private Page page;
 
@@ -15,22 +14,23 @@ public class OrderResponse {
         this.page = page;
     }
 
-    public static class Embedded {
-        public List<ClientOrder> orders = new ArrayList<>();
-
-        public List<ClientOrder> getOrders() {
-            return orders;
-        }
-
-        public void setOrders(List<ClientOrder> orders) {
-            this.orders = orders;
-        }
-    }
     public void set_embedded(Embedded _embedded) {
         this._embedded = _embedded;
     }
 
     public Embedded getEmbedded() {
         return _embedded;
+    }
+
+    public static class Embedded {
+        public List<Client> clients;
+
+        public List<Client> setClients() {
+            return clients;
+        }
+
+        public void setClients(List<Client> clients) {
+            this.clients = clients;
+        }
     }
 }

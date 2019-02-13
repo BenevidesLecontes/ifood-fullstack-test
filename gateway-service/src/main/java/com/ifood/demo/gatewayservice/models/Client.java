@@ -49,4 +49,10 @@ public class Client {
     public void setPhone(String phone) {
         this.phone = phone;
     }
+
+    @Override
+    public String toString() {
+        return String.format(
+                "Client (id=%s, name=%s, email=%s, phone=%s)", this.id, this.name, this.email, this.phone);
+    }
 }

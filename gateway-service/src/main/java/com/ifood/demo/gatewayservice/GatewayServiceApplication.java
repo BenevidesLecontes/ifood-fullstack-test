@@ -7,8 +7,10 @@ import com.ifood.demo.gatewayservice.models.ClientOrder;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.hystrix.EnableHystrix;
 import org.springframework.cloud.openfeign.EnableFeignClients;
 import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Profile;
 
 import java.text.DecimalFormat;
 import java.util.*;
@@ -17,6 +19,7 @@ import java.util.stream.Stream;
 
 @SpringBootApplication
 @EnableFeignClients
+@EnableHystrix
 public class GatewayServiceApplication {
 
     public static void main(String[] args) {
@@ -25,9 +28,10 @@ public class GatewayServiceApplication {
 
 
     @Bean
+    @Profile("!test")
     public CommandLineRunner init(ClientHTTP clientHTTP, OrderHTTP orderHTTP) {
-        return args -> Stream.of("peter", "lois", "stewie", "brian")
-                .map(name -> new Client(UUID.randomUUID(), name, name + "@gmail.com.br", new Random().nextLong() + ""))
+        return args -> Stream.of("Peter", "Lois", "Stewie", "Brian")
+                .map(name -> new Client(UUID.randomUUID(), name, name.toLowerCase() + "@gmail.com.br", "21969031717"))
                 .map(c -> {
                     Client client = clientHTTP.createClient(c);
                     return client.getId();
@@ -57,7 +61,7 @@ public class GatewayServiceApplication {
         double min = 0;
         double max = 2.10;
         double diff = max - min;
-        DecimalFormat formatter = new DecimalFormat("#0.00");  // edited here.
+        DecimalFormat formatter = new DecimalFormat("#0.00");
         double randomValue = min + Math.random( ) * diff;
         double tempRes = Math.floor(randomValue * 10);
         double finalRes = tempRes / 10;
